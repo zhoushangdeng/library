@@ -61,7 +61,7 @@ const delMenus = async ctx => {
     const { id } = ctx.request.body;
     let sql = `delete from menus where id=${id}`
     const data = await query(sql)
-    ctx.body = data.affectedRows === 1
+    ctx.body = data.affectedRows == 1
         ? { code: 200, data: '删除成功', msg: 'success' }
         : { code: 201, data: data, msg: '删除失败，数据不存在或者数据库错误' }
 }
@@ -70,7 +70,7 @@ const updateMenus = async ctx => {
     const { id, title, menusName, path, icon, parentID, type } = ctx.request.body;
     let sql = `update menus set title='${title}',menusName='${menusName}',path='${path}',icon='${icon}',parentID=${parentID},type=${type} where id=${id}`
     const data = await query(sql)
-    ctx.body = data?.affectedRows === 1
+    ctx.body = data.affectedRows == 1
         ? { code: 200, data: '修改成功', msg: 'success' }
         : { code: 201, data: '修改失败', msg: data }
 }
