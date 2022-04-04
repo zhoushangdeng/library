@@ -28,7 +28,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/register",
     name: "Register",
     meta: { title: "注册", keepAlive: true },
-    component: () => import("@/views/register/index.vue"),
+    component: () => import("@/views/Register/index.vue"),
   },
   {
     path: '/404',

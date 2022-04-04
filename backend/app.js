@@ -12,10 +12,11 @@ const book = require('./routes/books')
 const borrow = require('./routes/borrow')
 const menus = require('./routes/menus')
 const role = require('./routes/role')
+const register = require('./routes/register')
 const app = new Koa()
 const jwtSecret = 'jwtSecret'
 
-app.use(koaJwt({ secret: jwtSecret }).unless({ path: [/\/library\/login/] }))
+app.use(koaJwt({ secret: jwtSecret }).unless({ path: [/\/library\/login/,/\/library\/register/] }))
 app.use(cors({ 'origin': "*" }));
 onerror(app)
 app.use(logger())
@@ -27,6 +28,7 @@ app.use(book.routes(), book.allowedMethods())
 app.use(borrow.routes(), borrow.allowedMethods())
 app.use(menus.routes(), menus.allowedMethods())
 app.use(role.routes(), role.allowedMethods())
+app.use(register.routes(), register.allowedMethods())
 
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)

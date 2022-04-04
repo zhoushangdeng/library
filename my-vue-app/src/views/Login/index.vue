@@ -1,13 +1,13 @@
 <template>
   <el-container class="login">
     <el-header>
-      <h2 style="text-align: center">zsd-vue-node-demo</h2>
+      <h2 style="text-align: center;color:black;">图书管理系统</h2>
     </el-header>
     <el-main>
-      <div style="height: 400px; width: 400px; margin: 0px auto">
+      <div style="height: 400px; width: 300px; margin: 0px auto;" v-show="loginOrRejister">
         <el-form label-position="top" style="margin-top: 5em" ref="formRef" :rules="loginRules" :model="formState">
-          <el-form-item label="邮箱" prop="username">
-            <el-input v-model.trim="formState.username" placeholder="请输入用户名/邮箱"></el-input>
+          <el-form-item label="用户名/学号" prop="username">
+            <el-input v-model.trim="formState.username" placeholder="请输入用户名/学号"></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="password">
             <el-input v-model.trim="formState.password" type="password" placeholder="请输入密码，六位数以上" @keyup.enter="goLogin">
@@ -15,22 +15,65 @@
           </el-form-item>
           <el-form-item>
             <div style="display: flex; justify-content: center">
-              <el-button @click="goLogin" type="success" round @keyup.enter="goLogin">登录</el-button>
+              <el-button @click="goLogin" type="success" round @keyup.enter="goLogin" :disabled="disabled">登录</el-button>
             </div>
             <div style="display: flex; justify-content: flex-end">
               <p>
-                还没注册？<el-link style="color: white" type="success" @click="goRegister">点击这里
-                </el-link>
+                还没注册？<span style="color: white;cursor: pointer;" type="success" @click="goRegister">点击这里
+                </span>
+              </p>
+            </div>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div style="height: 400px; width: 300px; margin: 0px auto;" v-show="!loginOrRejister">
+        <el-form label-position="top" style="margin-top: 5em" ref="formRef" :rules="loginRules" :model="formState">
+          <el-form-item prop="username">
+            <el-input v-model.trim="formRegister.name" placeholder="请输入姓名"></el-input>
+          </el-form-item>
+          <el-form-item prop="username">
+            <el-input v-model.trim="formRegister.studentCode" placeholder="请输入学号"></el-input>
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input v-model.trim="formRegister.password" type="password" placeholder="请输入密码，六位数以上" @keyup.enter="goLogin">
+            </el-input>
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input v-model.trim="formRegister.major" placeholder="请输入专业" @keyup.enter="goLogin">
+            </el-input>
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input v-model.trim="formRegister.className" placeholder="请输入班级" @keyup.enter="goLogin">
+            </el-input>
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input v-model.trim="formRegister.email" placeholder="请输入邮箱" @keyup.enter="goLogin">
+            </el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model="formRegister.sex" placeholder="请选择性别">
+              <el-option label="男" value="男" />
+              <el-option label="女" value="女" />
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <div style="display: flex; justify-content: center">
+              <el-button @click="insertUsers" type="success" round @keyup.enter="insertUsers">注册</el-button>
+            </div>
+            <div style="display: flex; justify-content: flex-end">
+              <p>
+                点击这里>><span style="color: white;cursor: pointer;" type="success" @click="toLogin">返回登录
+                </span>
               </p>
             </div>
           </el-form-item>
         </el-form>
       </div>
     </el-main>
-    <el-footer>
+    <el-footer class="login-footer">
       <p style="text-align: center">
         服务热线：12345678912<br />
-        Email：1912504939@qq.com<br />
+        Email：123456789@qq.com<br />
       </p>
     </el-footer>
   </el-container>
@@ -41,6 +84,8 @@ import { ElMessage, ElLoading } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { setToken } from '@/util/auth'
 import { login } from '@/api/user/login'
+import { register } from '@/api/user/register'
+import { insertUser } from '@/api/user/index'
 export default defineComponent({
   setup: () => {
     interface FormState {
@@ -49,9 +94,21 @@ export default defineComponent({
     }
     const router = useRouter()
     const formRef = ref()
+    const loginOrRejister = ref(true)
+    const disabled = ref(false)
     const formState: FormState = reactive({
       username: '',
       password: '',
+    })
+    const formRegister = reactive({
+      name: '',
+      password: '',
+      email: '',
+      studentCode: '',
+      major: '',
+      className: '',
+      sex: '',
+      roleId: '2002',
     })
     const loginRules = reactive({
       username: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
@@ -61,10 +118,14 @@ export default defineComponent({
       ],
     })
     const goRegister = () => {
-      router.push('/register')
+      loginOrRejister.value = false
+    }
+    const toLogin = () => {
+      loginOrRejister.value = true
     }
     const goLogin = async () => {
       await formRef.value.validate(async (valid: any) => {
+        disabled.value = true
         let loadingInstance = ElLoading.service({
           fullscreen: true,
           background: '#2c3e5000',
@@ -74,25 +135,48 @@ export default defineComponent({
             const { code, data } = await login({
               ...formState,
               email: formState.username,
+              studentCode: formState.username,
             })
             if (code == 200) {
               setToken(data.token, data.id, data.roleId)
               router.push('/Home')
+              disabled.value = false
             } else {
+              disabled.value = false
               ElMessage.error(data)
             }
           }
         } catch (error) {
           console.log(error)
+          disabled.value = false
         }
         loadingInstance.close()
+        disabled.value = false
       })
+    }
+    const insertUsers = async () => {
+      disabled.value = true
+      return register(formRegister)
+        .then(() => {
+          ElMessage.success('注册成功！')
+          setTimeout(() => {
+            loginOrRejister.value = true
+          }, 1000)
+          disabled.value = false
+        })
+        .catch(() => (disabled.value = false))
     }
     return {
       formRef,
       formState,
       loginRules,
       goLogin,
+      toLogin,
+      goRegister,
+      loginOrRejister,
+      formRegister,
+      insertUsers,
+      disabled,
     }
   },
 })
@@ -103,16 +187,23 @@ export default defineComponent({
   width: 100%;
   height: 100vh;
   color: #fff;
+  // background-image: url('@/assets/back_one.jpg');
   /*背景颜色设置渐变*/
   background: linear-gradient(0deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
+  .el-form-item__label {
+    color: black !important;
+  }
   .el-header,
   .el-footer {
     margin: 0;
     padding: 0;
-    height: 35px;
+    height: 46px;
     color: white;
+    p {
+      margin: 0px;
+    }
   }
   .el-main {
     margin: 0;
