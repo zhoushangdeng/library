@@ -187,11 +187,11 @@ export default defineComponent({
   width: 100%;
   height: 100vh;
   color: #fff;
-  // background-image: url('@/assets/back_one.jpg');
+  background-image: url('@/assets/back_one.jpg');
   /*背景颜色设置渐变*/
-  background: linear-gradient(0deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-  background-size: 400% 400%;
-  animation: gradientBG 15s ease infinite;
+  // background: linear-gradient(0deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  // background-size: 400% 400%;
+  // animation: gradientBG 15s ease infinite;
   .el-form-item__label {
     color: black !important;
   }
