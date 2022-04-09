@@ -135,8 +135,8 @@ export default defineComponent({
     const input = ref('')
     const getBorrows = async () => {
       const data = await getBorrow({
-        start: '2011-12-10 21:38:39',
-        end: '2022-12-10 21:38:39',
+        start: '1970-12-10 21:38:39',
+        end: moment().format('yyyy-MM-DD HH:mm:ss'),
       })
       state.tableData = data
     }
