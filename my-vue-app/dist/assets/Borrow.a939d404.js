@@ -1,0 +1,1 @@
+import{v as o}from"./index.e78fa2d6.js";function e(r){return o({url:"/borrow",method:"get",params:r})}function u(r){return o({url:"/borrow",method:"put",data:r})}function n(r){return o({url:"/borrow",method:"delete",params:r})}function d(r){return o({url:"/borrow",method:"patch",data:r})}export{n as d,e as g,u as i,d as u};

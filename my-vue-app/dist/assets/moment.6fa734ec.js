@@ -1,4 +1,4 @@
-import{v as Ie}from"./index.30053557.js";function pi(e){return Ie({url:"/book",method:"get",params:e})}function Yi(e){return Ie({url:"/book",method:"put",data:e})}function Oi(e){return Ie({url:"/book",method:"delete",params:e})}function Ti(e){return Ie({url:"/book",method:"patch",data:e})}//! moment.js
+import{v as Ie}from"./index.e78fa2d6.js";function pi(e){return Ie({url:"/book",method:"get",params:e})}function Yi(e){return Ie({url:"/book",method:"put",data:e})}function Oi(e){return Ie({url:"/book",method:"delete",params:e})}function Ti(e){return Ie({url:"/book",method:"patch",data:e})}//! moment.js
 //! version : 2.29.2
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT

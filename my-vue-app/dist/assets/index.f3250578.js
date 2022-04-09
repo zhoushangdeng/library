@@ -1,1 +1,0 @@
-import{v as r}from"./index.30053557.js";function u(e){return r({url:"/user",method:"get",params:e})}function s(e){return r({url:"/user",method:"put",data:e})}function n(e){return r({url:"/user",method:"delete",params:e})}function a(e){return r({url:"/user",method:"patch",data:e})}export{n as d,u as g,s as i,a as u};
