@@ -7,6 +7,23 @@ export function getInfo(params: any) {
         params
     })
 }
+
+export function getMenus(params: any) {
+    return request({
+        url: '/menu',
+        method: 'get',
+        params
+    })
+}
+
+export function getMenusTree(params: any) {
+    return request({
+        url: '/menu/tree',
+        method: 'get',
+        params
+    })
+}
+
 export function insertMenus(data: any) {
     return request({
         url: '/menu',

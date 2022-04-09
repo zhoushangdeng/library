@@ -5,9 +5,11 @@ const query = require('../libs/mysqlPool')
 const COLLECTION = "library/user";
 
 const gettUser = async ctx => {
-    const { keyword, currentPage, total } = ctx.request.query;
-    logV.notice("select user", { keyword, currentPage, total })
-    const result = await query(`select * from user where name like '%${keyword}%' order by id limit ${currentPage},${total}`)
+    const { keyword, currentPage, total, id } = ctx.request.query;
+    logV.notice("select user", { keyword, currentPage, total, id })
+    const sql = id ? `select * from user where id=${id}`
+        : `select * from user where name like '%${keyword}%' order by id limit ${currentPage},${total}`
+    const result = await query(sql)
     ctx.body = result
     logV.notice("select user success", ctx.body)
 }

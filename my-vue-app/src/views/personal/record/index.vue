@@ -21,55 +21,8 @@
             {{row.state == 'Notyet'?"未还":"已还"}}
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="180">
-          <template #default="{ row, $index }">
-            <div>
-              <el-button type="info" icon="el-icon-edit" size="mini" @click="edit(row, $index)"></el-button>
-              <el-popconfirm confirmButtonText="确定" cancelButtonText="取消" icon="el-icon-info" iconColor="red" title="确定删除吗？" @confirm="delBorrows(row, $index)">
-                <template #reference>
-                  <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
-                </template>
-              </el-popconfirm>
-            </div>
-          </template>
-        </el-table-column>
       </el-table>
-      <el-dialog :close-on-click-modal="false" title="书籍编辑" v-model="dialogVisible" width="50%" :before-close="handleClose">
-        <el-form class="BorrowDialog" ref="form" :model="state.form" label-width="110px">
-          <el-form-item label="选择作品">
-            <el-select v-model="state.from.bookId" placeholder="请选择">
-              <el-option v-for="item in state.books" :key="item.id" :label="item.book_name" :value="item.id" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="借书人学号">
-            <el-input v-model="state.from.studentCode"></el-input>
-          </el-form-item>
-          <el-form-item label="借出日期">
-            <el-date-picker v-model="state.from.borrowDate" type="date" placeholder="Pick a day" format="YYYY-MM-DD" value-format="YYYY-MM-DD" :disabled-date="disabledDate" :shortcuts="shortcuts" />
-          </el-form-item>
-          <el-form-item label="还书日期">
-            <el-date-picker v-model="state.from.returnDate" type="date" placeholder="Pick a day" format="YYYY-MM-DD" value-format="YYYY-MM-DD" :shortcuts="shortcuts" />
-          </el-form-item>
-          <el-form-item label="是否已还书">
-            <el-radio v-model="state.from.state" label="Returned" size="large" border>已还</el-radio>
-            <el-radio v-model="state.from.state" label="Notyet" size="large" border>未还</el-radio>
-          </el-form-item>
-        </el-form>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="state.status === '修改' ? updateBorrows() : insertBorrows()">确 定</el-button>
-          </span>
-        </template>
-      </el-dialog>
     </el-main>
-    <el-footer>
-      <el-form :inline="true" class="demo-form-inline">
-        <el-form-item>
-          <el-button type="primary" icon="el-icon-plus" size="mini" @click="addMenus(0)" plain>新增</el-button>
-        </el-form-item>
-      </el-form>
-    </el-footer>
   </el-container>
 </template>
 <script lang="ts">
@@ -77,6 +30,8 @@ import { ref, defineComponent, reactive, onBeforeMount } from 'vue'
 import { ElMessage } from 'element-plus'
 import { getBorrow, insertBorrow, delBorrow, updateBorrow } from '@/api/Borrow'
 import { getBook } from '@/api/book'
+import { getToken } from '@/util/auth'
+
 import moment from 'moment'
 export default defineComponent({
   setup() {
@@ -137,6 +92,7 @@ export default defineComponent({
       const data = await getBorrow({
         start: '2011-12-10 21:38:39',
         end: '2022-12-10 21:38:39',
+        userId: getToken().id,
       })
       state.tableData = data
     }

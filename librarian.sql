@@ -11,7 +11,7 @@
  Target Server Version : 80023
  File Encoding         : 65001
 
- Date: 04/04/2022 17:58:08
+ Date: 09/04/2022 23:51:31
 */
 
 SET NAMES utf8mb4;
@@ -34,16 +34,17 @@ CREATE TABLE `book` (
   `current_num` int DEFAULT NULL,
   `buy_date` datetime DEFAULT NULL,
   `brief` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `lend_sum` int DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of book
 -- ----------------------------
 BEGIN;
-INSERT INTO `book` VALUES (1, '端开发之路第二版', 'dafdf', 'shangdeng', '软件工程', 123, 'pub_company', '2022-04-03 06:19:38', 100, 98, '2022-04-03 06:19:46', '23123');
-INSERT INTO `book` VALUES (5, '后端开发之路第二版', 'dafdf', 'shangdeng', '软件工程', 123, 'pub_company', '2022-04-03 06:19:38', 100, 100, '2022-04-03 06:19:46', '23123');
-INSERT INTO `book` VALUES (6, '修改测试112', NULL, '123', '修改测试1', 123, '123', '2022-01-01 10:00:00', 123, 121, '2022-01-01 10:00:00', '123');
+INSERT INTO `book` VALUES (13, '活着', NULL, '余华', '文学', 29, '新华书局', '2022-04-07 00:00:00', 100, 99, '2022-04-09 00:00:00', '活着讲述了人如何去承受巨大的苦难', 2);
+INSERT INTO `book` VALUES (14, '人间失格', NULL, '太宰治', '文学', 30, '不知名出版社', '2022-04-09 00:00:00', 100, 99, '2022-04-03 00:00:00', '人间失格', 3);
+INSERT INTO `book` VALUES (15, '三体', NULL, '刘慈欣', '科幻', 39, '三体出版社', '2008-04-11 00:00:00', 100, 100, '2022-04-01 00:00:00', '文化大革命如火如荼地进行，天文学家叶文洁在其间历经劫难，被带到军方绝秘计划“红岸工程”。叶文洁以太阳为天线，向宇宙发出地球文明的第一声啼鸣......', 2);
 COMMIT;
 
 -- ----------------------------
@@ -55,21 +56,18 @@ CREATE TABLE `borrow` (
   `book_id` int DEFAULT NULL,
   `student_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `borrow_date` datetime DEFAULT NULL,
-  `return_date` datetime DEFAULT NULL,
+  `return_date` varchar(255) DEFAULT NULL,
+  `state` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of borrow
 -- ----------------------------
 BEGIN;
-INSERT INTO `borrow` VALUES (1, 1, '1725123119', '2022-12-10 13:38:39', '2023-12-27 13:38:56');
-INSERT INTO `borrow` VALUES (2, 3, '1725123119', '2018-10-01 14:31:12', '2019-01-04 14:31:18');
-INSERT INTO `borrow` VALUES (3, 4, '1725123119', '2020-06-16 19:16:02', '2022-12-31 21:38:39');
-INSERT INTO `borrow` VALUES (5, 5, '1725123119', '2022-12-10 13:38:39', '2023-12-27 13:38:56');
-INSERT INTO `borrow` VALUES (6, 5, '123123123', '2023-12-27 00:00:00', '2023-12-26 00:00:00');
-INSERT INTO `borrow` VALUES (7, 5, '211123', '2022-12-10 13:38:39', '2023-12-27 13:38:56');
-INSERT INTO `borrow` VALUES (9, 6, '123123123', '2022-03-27 00:00:00', '2022-04-24 00:00:00');
+INSERT INTO `borrow` VALUES (18, 15, '2025123119', '2022-04-09 00:00:00', '2022-04-09', 'Returned');
+INSERT INTO `borrow` VALUES (19, 14, '2025123118', '2022-04-09 00:00:00', '', 'Notyet');
+INSERT INTO `borrow` VALUES (20, 13, '2025123119', '2022-04-09 00:00:00', '', 'Notyet');
 COMMIT;
 
 -- ----------------------------
@@ -84,26 +82,23 @@ CREATE TABLE `menus` (
   `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `parentID` int unsigned NOT NULL DEFAULT '1',
   `type` int NOT NULL DEFAULT '1',
+  `role_id` int DEFAULT '2002',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of menus
 -- ----------------------------
 BEGIN;
-INSERT INTO `menus` VALUES (2, '系统管理', 'system', 'system', 'el-icon-user', 0, 1);
-INSERT INTO `menus` VALUES (3, '菜单设置', 'menus', 'system/menus', 'el-icon-s-promotion', 2, 1);
-INSERT INTO `menus` VALUES (4, '用户管理', 'user', 'system/user', 'el-icon-user', 2, 1);
-INSERT INTO `menus` VALUES (45, '评审审核', 'sehnhe', 'src/asdfasdf', 'el-icon-user', 39, 1);
-INSERT INTO `menus` VALUES (50, '会议签到', 'meetingSign', 'meetingSign', 'el-icon-user', 48, 1);
-INSERT INTO `menus` VALUES (56, '3413241', '123412123123123', '1234123', '12341234', 55, 1);
-INSERT INTO `menus` VALUES (58, '书籍管理', 'book', 'book', 'el-icon-s-promotion', 0, 1);
-INSERT INTO `menus` VALUES (59, '学生管理', '学生管理', '学生管理', 'el-icon-s-promotion', 0, 1);
-INSERT INTO `menus` VALUES (60, '我的借阅', '我的借阅', '我的借阅', 'el-icon-s-promotion', 0, 2);
-INSERT INTO `menus` VALUES (61, '图书管理', 'administer', 'book/administer', 'el-icon-s-promotion', 58, 1);
-INSERT INTO `menus` VALUES (62, '借阅记录', 'takeNotes', 'book/takeNotes', 'el-icon-s-promotion', 58, 1);
-INSERT INTO `menus` VALUES (63, '个人中心', '个人中心', '个人中心', 'el-icon-s-promotion', 0, 2);
-INSERT INTO `menus` VALUES (64, '账号信息', '账号信息', '账号信息', '账号信息', 63, 2);
+INSERT INTO `menus` VALUES (2, '系统管理', 'system', 'system', 'el-icon-user', 0, 1, 2001);
+INSERT INTO `menus` VALUES (3, '菜单设置', 'menus', 'system/menus', 'el-icon-s-promotion', 2, 1, 2001);
+INSERT INTO `menus` VALUES (4, '用户管理', 'user', 'system/user', 'el-icon-user', 2, 1, 2001);
+INSERT INTO `menus` VALUES (58, '书籍管理', 'book', 'book', 'el-icon-s-promotion', 0, 1, 2001);
+INSERT INTO `menus` VALUES (61, '图书管理', 'administer', 'book/administer', 'el-icon-s-promotion', 58, 1, 2001);
+INSERT INTO `menus` VALUES (62, '借阅记录', 'takeNotes', 'book/takeNotes', 'el-icon-s-promotion', 58, 1, 2001);
+INSERT INTO `menus` VALUES (63, '个人中心', 'personal', 'personal', 'el-icon-s-promotion', 0, 1, 2002);
+INSERT INTO `menus` VALUES (64, '账号信息', 'account', 'personal/account', 'el-icon-s-promotion', 63, 1, 2002);
+INSERT INTO `menus` VALUES (65, '我的借书记录', 'record', 'personal/record', 'el-icon-s-promotion', 63, 1, 2002);
 COMMIT;
 
 -- ----------------------------
@@ -136,27 +131,19 @@ CREATE TABLE `user` (
   `major` varchar(255) DEFAULT NULL,
   `class_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `sex` enum('男','女') NOT NULL,
-  `roleId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `role_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `createTime` timestamp NOT NULL,
   `email` varchar(255) DEFAULT NULL,
   `student_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
 BEGIN;
-INSERT INTO `user` VALUES (1, 'admin', '1234567890', '软件开发', '1731班', '男', '2001', '2022-04-01 22:14:04', '1912504939@qq.com', '1725123119');
-INSERT INTO `user` VALUES (2, 'shangdeng', '1234567890', '123', 'undefined', '男', '2001', '2022-04-01 22:51:04', '1331', '123');
-INSERT INTO `user` VALUES (3, '灯若银河', '1234567890', NULL, NULL, '男', '2002', '2022-04-03 13:43:45', NULL, NULL);
-INSERT INTO `user` VALUES (5, '杰尼最美', '1234567890', '软件工程', '2022班', '女', '2002', '2022-04-03 13:49:44', '191231231@qq.com', '123123123');
-INSERT INTO `user` VALUES (6, '12312', '23123', '0123', 'undefined', '男', NULL, '2022-04-04 11:50:30', 'undefined', '123');
-INSERT INTO `user` VALUES (7, 'zhoushangdengsaf', '12345678', '生物学', 'undefined', '男', NULL, '2022-04-04 11:51:37', '19123123@qq.com', '123123123');
-INSERT INTO `user` VALUES (9, '杰尼123', '123456789', '软件工程', 'undefined', '女', NULL, '2022-04-04 11:52:43', '191231231@qq.com', '123');
-INSERT INTO `user` VALUES (11, '123', '123', '123', 'undefined', '男', NULL, '2022-04-04 13:27:51', '123', '123');
-INSERT INTO `user` VALUES (12, '3123123', '123123', '123123', 'undefined', '男', NULL, '2022-04-04 15:47:40', '123', 'undefined');
-INSERT INTO `user` VALUES (13, 'werqwer', 'werqwer', 'wer', 'undefined', '男', NULL, '2022-04-04 15:48:56', 'qwerqwer', '0284904123123');
+INSERT INTO `user` VALUES (1, 'admin', '1234567890', '软件开发', '202223', '男', '2001', '2022-04-01 22:14:04', '1912504939@qq.com', '2025123119');
+INSERT INTO `user` VALUES (2, 'shangdeng', '1234567890', '123', '2022', '男', '2002', '2022-04-01 22:51:04', '1331', '2025123118');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

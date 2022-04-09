@@ -10,7 +10,7 @@
         <el-table-column prop="sex" label="性别" width="50" align="center"></el-table-column>
         <el-table-column label="角色" width="80" align="center">
           <template #default="{ row }">
-            {{row.roleId==2001?'管理员':'学生'}}
+            {{row.role_id==2001?'管理员':'学生'}}
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="180">
@@ -88,7 +88,7 @@ export default defineComponent({
         studentCode: '',
         major: '',
         sex: '',
-        roleId: '',
+        roleId: 2002,
       },
       status: '修改',
       role: [],
@@ -114,7 +114,7 @@ export default defineComponent({
         studentCode: '',
         major: '',
         sex: '',
-        roleId: '',
+        roleId: 2002,
       }
       dialogVisible.value = true
     }
@@ -130,8 +130,16 @@ export default defineComponent({
       }
     }
     const edit = (row: any, index: number) => {
-      row.roleId = parseInt(row.roleId) || ''
-      state.from = row
+      row.roleId = parseInt(row.roleId) || 2002
+      state.from = {
+        name: row.name,
+        password: row.password,
+        email: row.email,
+        studentCode: row.student_code,
+        major: row.major,
+        sex: row.sex,
+        roleId: parseInt(row.role_id),
+      }
       state.status = '修改'
       dialogVisible.value = true
     }

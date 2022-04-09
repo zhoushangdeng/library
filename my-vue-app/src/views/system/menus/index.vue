@@ -1,32 +1,12 @@
 <template>
   <el-container>
     <el-main>
-      <el-table
-        :data="state.tableData"
-        style="width: 99.5%"
-        row-key="id"
-        border
-        stripe
-        default-expand-all
-        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-        size="mini"
-        height="calc(100vh - 180px)"
-      >
+      <el-table :data="state.tableData" style="width: 99.5%" row-key="id" border stripe default-expand-all :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" size="mini" height="calc(100vh - 180px)">
         <el-table-column prop="title" label="菜单标题"> </el-table-column>
         <el-table-column prop="id" label="菜单ID" width="100" align="center">
         </el-table-column>
-        <el-table-column
-          prop="parentID"
-          label="父级ID"
-          align="center"
-          width="100"
-        ></el-table-column>
-        <el-table-column
-          prop="type"
-          label="菜单类型"
-          align="center"
-          width="100"
-        >
+        <el-table-column prop="parentID" label="父级ID" align="center" width="100"></el-table-column>
+        <el-table-column prop="type" label="菜单类型" align="center" width="100">
           <template #default="{ row }">
             {{ row.type === 1 ? '前台' : '后台' }}
           </template>
@@ -37,44 +17,18 @@
         <el-table-column label="操作" align="center" width="180">
           <template #default="{ row, $index }">
             <div>
-              <el-button
-                icon="el-icon-plus"
-                size="mini"
-                type="success"
-                @click="addMenus(row.id)"
-              ></el-button>
-              <el-button
-                type="info"
-                icon="el-icon-edit"
-                size="mini"
-                @click="edit(row, $index)"
-              ></el-button>
-              <el-popconfirm
-                confirmButtonText="确定"
-                cancelButtonText="取消"
-                icon="el-icon-info"
-                iconColor="red"
-                title="确定删除吗？"
-                @confirm="deleteMenus(row, $index)"
-              >
+              <el-button icon="el-icon-plus" size="mini" type="success" @click="addMenus(row.id)"></el-button>
+              <el-button type="info" icon="el-icon-edit" size="mini" @click="edit(row, $index)"></el-button>
+              <el-popconfirm confirmButtonText="确定" cancelButtonText="取消" icon="el-icon-info" iconColor="red" title="确定删除吗？" @confirm="deleteMenus(row, $index)">
                 <template #reference>
-                  <el-button
-                    type="danger"
-                    icon="el-icon-delete"
-                    size="mini"
-                  ></el-button>
+                  <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
                 </template>
               </el-popconfirm>
             </div>
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog
-        title="菜单编辑"
-        v-model="dialogVisible"
-        width="40%"
-        :before-close="handleClose"
-      >
+      <el-dialog title="菜单编辑" v-model="dialogVisible" width="40%" :before-close="handleClose">
         <el-form ref="form" :model="state.form" label-width="110px">
           <el-form-item label="菜单标题">
             <el-input v-model="state.from.title"></el-input>
@@ -98,11 +52,7 @@
         <template #footer>
           <span class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button
-              type="primary"
-              @click="state.status === '修改' ? updateMenu() : insertMenu()"
-              >确 定</el-button
-            >
+            <el-button type="primary" @click="state.status === '修改' ? updateMenu() : insertMenu()">确 定</el-button>
           </span>
         </template>
       </el-dialog>
@@ -117,14 +67,7 @@
           ></el-input>
         </el-form-item> -->
         <el-form-item>
-          <el-button
-            type="primary"
-            icon="el-icon-plus"
-            size="mini"
-            @click="addMenus(0)"
-            plain
-            >新增</el-button
-          >
+          <el-button type="primary" icon="el-icon-plus" size="mini" @click="addMenus(0)" plain>新增</el-button>
         </el-form-item>
       </el-form>
     </el-footer>
@@ -133,7 +76,9 @@
 <script lang="ts">
 import { ref, defineComponent, reactive, onBeforeMount } from 'vue'
 import { ElMessage } from 'element-plus'
-import { getInfo, insertMenus, delMenus, updateMenus } from '@/api/menus'
+import { getMenusTree, insertMenus, delMenus, updateMenus } from '@/api/menus'
+import { getToken } from '@/util/auth'
+
 export default defineComponent({
   setup() {
     const state = reactive({
@@ -195,7 +140,7 @@ export default defineComponent({
     }
     const input = ref('')
     const getInfos = async () => {
-      const data = await getInfo()
+      const data = await getMenusTree({ roleId: getToken().roleId })
       state.tableData = data
     }
     const dialogVisible = ref(false)

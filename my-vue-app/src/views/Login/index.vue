@@ -27,26 +27,26 @@
         </el-form>
       </div>
       <div style="height: 400px; width: 300px; margin: 0px auto;" v-show="!loginOrRejister">
-        <el-form label-position="top" style="margin-top: 5em" ref="formRef" :rules="loginRules" :model="formState">
-          <el-form-item prop="username">
+        <el-form label-position="top" style="margin-top: 5em" ref="formRegis" :rules="registerRules" :model="formRegister">
+          <el-form-item prop="name">
             <el-input v-model.trim="formRegister.name" placeholder="请输入姓名"></el-input>
           </el-form-item>
-          <el-form-item prop="username">
+          <el-form-item prop="studentCode">
             <el-input v-model.trim="formRegister.studentCode" placeholder="请输入学号"></el-input>
           </el-form-item>
           <el-form-item prop="password">
             <el-input v-model.trim="formRegister.password" type="password" placeholder="请输入密码，六位数以上" @keyup.enter="goLogin">
             </el-input>
           </el-form-item>
-          <el-form-item prop="password">
+          <el-form-item>
             <el-input v-model.trim="formRegister.major" placeholder="请输入专业" @keyup.enter="goLogin">
             </el-input>
           </el-form-item>
-          <el-form-item prop="password">
+          <el-form-item>
             <el-input v-model.trim="formRegister.className" placeholder="请输入班级" @keyup.enter="goLogin">
             </el-input>
           </el-form-item>
-          <el-form-item prop="password">
+          <el-form-item>
             <el-input v-model.trim="formRegister.email" placeholder="请输入邮箱" @keyup.enter="goLogin">
             </el-input>
           </el-form-item>
@@ -85,7 +85,6 @@ import { useRouter } from 'vue-router'
 import { setToken } from '@/util/auth'
 import { login } from '@/api/user/login'
 import { register } from '@/api/user/register'
-import { insertUser } from '@/api/user/index'
 export default defineComponent({
   setup: () => {
     interface FormState {
@@ -94,6 +93,7 @@ export default defineComponent({
     }
     const router = useRouter()
     const formRef = ref()
+    const formRegis = ref()
     const loginOrRejister = ref(true)
     const disabled = ref(false)
     const formState: FormState = reactive({
@@ -107,15 +107,23 @@ export default defineComponent({
       studentCode: '',
       major: '',
       className: '',
-      sex: '',
+      sex: '男',
       roleId: '2002',
     })
     const loginRules = reactive({
-      username: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
+      name: [{ required: true, message: '请输入姓名或账号', trigger: 'blur' }],
       password: [
         { required: true, message: '请输入密码', trigger: 'blur' },
         { min: 8, max: 16, message: '长度在 8 到 16 个字符', trigger: 'blur' },
       ],
+    })
+    const registerRules = reactive({
+      name: [{ required: true, message: '请输入姓名或账号', trigger: 'blur' }],
+      password: [
+        { required: true, message: '请输入密码', trigger: 'blur' },
+        { min: 8, max: 16, message: '长度在 8 到 16 个字符', trigger: 'blur' },
+      ],
+      studentCode: [{ required: true, message: '请输入学号', trigger: 'blur' }],
     })
     const goRegister = () => {
       loginOrRejister.value = false
@@ -138,7 +146,7 @@ export default defineComponent({
               studentCode: formState.username,
             })
             if (code == 200) {
-              setToken(data.token, data.id, data.roleId)
+              setToken(data.token, data.id, data.roleId, data.name)
               router.push('/Home')
               disabled.value = false
             } else {
@@ -156,20 +164,34 @@ export default defineComponent({
     }
     const insertUsers = async () => {
       disabled.value = true
-      return register(formRegister)
-        .then(() => {
-          ElMessage.success('注册成功！')
-          setTimeout(() => {
-            loginOrRejister.value = true
-          }, 1000)
-          disabled.value = false
+      await formRegis.value.validate(async (valid: any) => {
+        disabled.value = true
+        let loadingInstance = ElLoading.service({
+          fullscreen: true,
+          background: '#2c3e5000',
         })
-        .catch(() => (disabled.value = false))
+        if (valid) {
+          return register(formRegister)
+            .then(() => {
+              ElMessage.success('注册成功！')
+              setTimeout(() => {
+                loginOrRejister.value = true
+              }, 1000)
+              loadingInstance.close()
+              disabled.value = false
+            })
+            .catch(() => {
+              disabled.value = false
+            })
+        }
+      })
     }
     return {
       formRef,
+      formRegis,
       formState,
       loginRules,
+      registerRules,
       goLogin,
       toLogin,
       goRegister,

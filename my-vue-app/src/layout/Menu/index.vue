@@ -1,34 +1,14 @@
 <template>
   <div class="Menu">
     <div class="menu">
-      <el-menu
-        :uniqueOpened="true"
-        :default-active="defaultActive"
-        class="el-menu-vertical-demo"
-        @open="handleOpen"
-        background-color="#2e3035"
-        text-color="#fff"
-        active-text-color="#ffd04b"
-        :collapse="isCollapse"
-        :collapse-transition="true"
-        style="height: calc(100vh - 40px)"
-      >
-        <el-submenu
-          v-for="item1 in state.menusTree"
-          :key="item1.id"
-          :index="item1.id"
-        >
+      <el-menu :uniqueOpened="true" :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleOpen" background-color="#2e3035" text-color="#fff" active-text-color="#ffd04b" :collapse="isCollapse" :collapse-transition="true" style="height: calc(100vh - 40px)">
+        <el-submenu v-for="item1 in state.menusTree" :key="item1.id" :index="item1.id">
           <template #title>
             <i :class="item1.icon"></i>
             <span>{{ item1.title || '' }}</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item
-              @click="clickRoute(item2, item2.index)"
-              v-for="(item2) in item1.children"
-              :key="item2.id"
-              :index="item2.id"
-            >
+            <el-menu-item @click="clickRoute(item2, item2.index)" v-for="(item2) in item1.children" :key="item2.id" :index="item2.id">
               <i :class="item2.icon"></i>{{ item2.title }}
             </el-menu-item>
           </el-menu-item-group>
@@ -36,11 +16,7 @@
       </el-menu>
     </div>
     <div class="footer">
-      <el-button
-        :icon="isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'"
-        @click="isCollapse = !isCollapse"
-        size="medium"
-      />
+      <el-button :icon="isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'" @click="isCollapse = !isCollapse" size="medium" />
     </div>
   </div>
 </template>
@@ -49,7 +25,7 @@
 import { defineComponent, ref, onBeforeMount, computed, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { getInfo } from '@/api/menus'
+import { getMenusTree } from '@/api/menus'
 import { getToken } from '@/util/auth'
 export default defineComponent({
   name: 'Menu',
@@ -85,7 +61,7 @@ export default defineComponent({
     }
 
     const getInfos = async () => {
-      const data = await getInfo({ token: getToken() })
+      const data = await getMenusTree({ roleId: getToken().roleId })
       state.menusTree = data
     }
     getInfos()

@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import { getNavList } from '@/api/user/index'
-import { getInfo } from '@/api/menus'
+import { getMenus } from '@/api/menus'
+import { getToken } from '@/util/auth'
 const store = createStore({
     state: {
         userInfo: {
@@ -48,7 +49,8 @@ const store = createStore({
             commit("getclickRoute", val)
         },
         async asyncGetmenus({ commit }, val) {
-            const data = await getInfo({ type: '1' });
+            console.log("getToken()", getToken());
+            const data = await getMenus({ roleId: getToken().roleId });
             /*模拟 获取后端返回的路由表 */
             const modules = import.meta.glob('/*/views/**/**.vue')
             const menusArr: any = [];

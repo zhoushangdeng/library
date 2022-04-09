@@ -3,15 +3,11 @@ const query = require('../libs/mysqlPool')
 const router = require('koa-router')()
 const COLLECTION = 'library/menu'
 
-const getMenus = async ctx => {
-    const { type } = ctx.request.query;
-    const sql = type == '2' ? `select * from menus where type=${type}` : `select * from menus;`
+const getMenusTree = async ctx => {
+    const { roleId } = ctx.request.query;
+    const sql = roleId == '2001' ? `select * from menus` : `select * from menus where role_id=${roleId}`
     const data = await query(sql)
     const menus = []
-    if (type === '1') {/* type 为 '1'时返回menus表里的数据，其他值则返回处理过的树形 */
-        ctx.body = data;
-        return
-    }
     data.map(item => {
         if (item.parentID === 0) {
             menus.push({ ...item, children: [] });
@@ -32,6 +28,13 @@ const getMenus = async ctx => {
     filters(menus)
     ctx.body = menus
 
+}
+
+const getMenus = async ctx => {
+    const { roleId } = ctx.request.query;
+    const sql = roleId == '2001' ? `select * from menus` : `select * from menus where role_id=${roleId};`
+    const data = await query(sql)
+    ctx.body = data;
 }
 
 const insertMenus = async ctx => {
@@ -77,6 +80,7 @@ const updateMenus = async ctx => {
 
 router.prefix(`/${COLLECTION}`);
 router.get('/', getMenus);
+router.get('/tree', getMenusTree);
 router.put('/', insertMenus)
 router.patch('/', updateMenus)
 router.delete('/', delMenus)

@@ -32,12 +32,12 @@
 import { defineComponent, reactive, computed, getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { removeToken } from '@/util/auth'
+import { removeToken, getToken } from '@/util/auth'
 export default defineComponent({
   setup() {
     const store = useStore()
     const router = useRouter()
-    const userName: string = store.state.userInfo.userName
+    const userName: string = getToken().name
     interface obj {
       ctx: any
     }

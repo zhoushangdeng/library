@@ -18,7 +18,9 @@ const userLogin = async ctx => {
         const payload = { exp: Date.now() + parseInt(TOKEEN_EXPRIES), UserID: data[0].id }
         let token = 'Bearer ' + jwt.encode(payload, jwtSecret)
         let userID = data[0].id;
-        ctx.body = { code: 200, data: { id: userID, token: token }, msg: 'success' }
+        const roleId = data[0].role_id
+        const name = data[0].name
+        ctx.body = { code: 200, data: { id: userID, token: token, roleId, name }, msg: 'success' }
     } else {
         ctx.body = { code: 401, data: '用户名或密码无效!', msg: data }
     }

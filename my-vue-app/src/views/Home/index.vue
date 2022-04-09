@@ -2,48 +2,14 @@
   <el-container class="home">
     <el-main>
       <div style="display: flex; width: 100%; height: 100%; flex-direction: column">
-        <div
-          id="echartsRef"
-          style="flex: 1"
-        ></div>
+        <div id="echartsRef" style="flex: 1"></div>
         <div>
-          <el-table
-            :data="tableData"
-            border
-            style="width: 100%; height: 200px !important"
-            size="mini"
-          >
-            <el-table-column
-              prop="date"
-              align="center"
-              label="类别"
-            >
+          <el-table :data="tableData" border style="width: 100%; height: 200px !important" size="mini">
+            <el-table-column prop="book_name" align="center" label="作品名称">
             </el-table-column>
-            <el-table-column
-              prop="A"
-              align="center"
-              label="A"
-            />
-            <el-table-column
-              prop="B"
-              align="center"
-              label="B"
-            />
-            <el-table-column
-              prop="C"
-              align="center"
-              label="C"
-            />
-            <el-table-column
-              prop="D"
-              align="center"
-              label="D"
-            />
-            <el-table-column
-              prop="E"
-              align="center"
-              label="E"
-            />
+            <el-table-column prop="lend_sum" align="center" label="借出次数" />
+            <el-table-column prop="total_num" align="center" label="总数" />
+            <el-table-column prop="current_num" align="center" label="库存" />
           </el-table>
         </div>
       </div>
@@ -51,112 +17,44 @@
   </el-container>
 </template>
 <script lang="ts">
-import { ref, defineComponent, reactive, computed, onMounted } from 'vue'
+import { ref, defineComponent, reactive, onMounted } from 'vue'
 import * as echarts from 'echarts'
+import { getStatistics } from '@/api/statistics'
 
 export default defineComponent({
-  props: {},
   setup: () => {
-    const tableData = [
-      {
-        date: '类别1',
-        A: 200,
-        B: 140,
-        C: 34,
-        D: 43,
-        E: 65,
-      },
-      {
-        date: '类别2',
-        A: 200,
-        B: 140,
-        C: 34,
-        D: 43,
-        E: 65,
-      },
-      {
-        date: '类别3',
-        A: 200,
-        B: 140,
-        C: 34,
-        D: 43,
-        E: 65,
-      },
-    ]
-
-    onMounted(() => {
+    const tableData = ref([])
+    const state = reactive({
+      seriesData: [],
+      xAxisData: [],
+    })
+    onMounted(async () => {
+      const datas = await getStatistics()
+      tableData.value = datas
+      datas.map((item) => {
+        state.xAxisData.push(item.book_name)
+        state.seriesData.push(item.lend_sum)
+      })
       const echartsRefs = echarts.init(document.getElementById('echartsRef'))
       const option = {
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            crossStyle: {
-              color: '#999',
-            },
-          },
+        title: {
+          text: '书籍借出次数前十排行',
         },
-        toolbox: {
-          feature: {
-            dataView: { show: true, readOnly: false },
-            magicType: { show: true, type: ['line', 'bar'] },
-            restore: { show: true },
-            saveAsImage: { show: true },
-          },
+        xAxis: {
+          type: 'category',
+          data: state.xAxisData,
         },
-        legend: {
-          data: ['A', 'B', 'C', 'D', 'E', 'F'],
+        yAxis: {
+          type: 'value',
         },
-        xAxis: [
-          {
-            type: 'category',
-            data: ['类别A', '类别B', '类别C'],
-            axisPointer: {
-              type: 'shadow',
-            },
-          },
-        ],
-        yAxis: [
-          {
-            type: 'value',
-            name: '数量',
-            axisLabel: {
-              formatter: '{value}',
-            },
-          },
-          {
-            type: 'value',
-            name: '数量',
-            axisLabel: {
-              formatter: '{value}',
-            },
-          },
-        ],
         series: [
           {
-            name: 'A',
+            data: state.seriesData,
             type: 'bar',
-            data: [20, 49, 170],
-          },
-          {
-            name: 'B',
-            type: 'bar',
-            data: [26, 59, 190],
-          },
-          {
-            name: 'C',
-            type: 'bar',
-            data: [26, 59, 90],
-          },
-          {
-            name: 'D',
-            type: 'bar',
-            data: [26, 159, 90],
-          },
-          {
-            name: 'E',
-            type: 'bar',
-            data: [126, 59, 90],
+            showBackground: true,
+            backgroundStyle: {
+              color: 'rgba(180, 180, 180, 0.2)',
+            },
           },
         ],
       }
@@ -182,7 +80,7 @@ export default defineComponent({
     padding: 0px;
     height: calc(100vh - 170px);
     .content {
-      height: 90%;
+      height: 100%;
       min-width: 400px;
       background: rgba(73, 73, 69, 0.601);
     }
