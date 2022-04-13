@@ -80,6 +80,7 @@
           <el-button type="primary" icon="el-icon-plus" size="mini" @click="addMenus(0)" plain>新增</el-button>
         </el-form-item>
       </el-form>
+      <el-pagination :currentPage="currentPage" :page-size="pageSize" :page-sizes="[100, 200, 300, 400]" small background layout="sizes, prev, pager, next" :total="1000" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
     </el-footer>
   </el-container>
 </template>
@@ -199,6 +200,13 @@ export default defineComponent({
         },
       },
     ]
+
+    const handleSizeChange = (val) => {
+      console.log({ val })
+    }
+    const handleCurrentChange = (val) => {
+      console.log({ val })
+    }
     getBooks()
     onBeforeMount(() => {})
     return {
@@ -214,6 +222,8 @@ export default defineComponent({
       disabledDate,
       shortcuts,
       moment,
+      handleSizeChange,
+      handleCurrentChange,
     }
   },
 })
@@ -229,7 +239,11 @@ export default defineComponent({
   padding: 0px;
 }
 .el-footer {
+  display: flex;
   height: 40px !important;
+  .el-pagination{
+    margin-top: 5px;
+  }
   .el-form-item--mini.el-form-item,
   .el-form-item--small.el-form-item {
     margin-bottom: 0px !important;

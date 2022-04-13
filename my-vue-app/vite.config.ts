@@ -5,6 +5,6 @@ import path from 'path';
 export default defineConfig({
   plugins: [vue(), vueJsx()],
   base: "./",
-  resolve: { alias: { '@': path.resolve(__dirname, './src') } },
+  resolve: { alias: { '@': path.resolve(__dirname, 'src') } },
   server: { port: 4000, open: true, proxy: { '/library': 'http://localhost:6006' }, cors: true },
 })
