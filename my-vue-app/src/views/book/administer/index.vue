@@ -93,6 +93,7 @@ export default defineComponent({
   setup() {
     const state = reactive({
       tableData: [],
+      total: 0,
       from: {
         bookName: '',
         writer: '',
@@ -170,6 +171,7 @@ export default defineComponent({
     const getBooks = async () => {
       const data = await getBook({ keyword: '', currentPage: 0, total: 10 })
       state.tableData = data
+
     }
     const dialogVisible = ref(false)
     const updateBooks = async () => {
@@ -241,7 +243,7 @@ export default defineComponent({
 .el-footer {
   display: flex;
   height: 40px !important;
-  .el-pagination{
+  .el-pagination {
     margin-top: 5px;
   }
   .el-form-item--mini.el-form-item,

@@ -7,8 +7,9 @@ const COLLECTION = "library/book";
 const selectBooks = async ctx => {
     const { keyword, currentPage, total } = ctx.request.query;
     logV.notice("select Books", { keyword, currentPage, total })
-    const result = await query(`select * from book where book_name like '%${keyword}%' order by id limit ${currentPage},${total}`)
-    ctx.body = result
+    const data = await query(`select * from book where book_name like '%${keyword}%' order by id limit ${currentPage},${total}`)
+    const totals = await query(`SELECT FOUND_ROWS() as totals`)
+    ctx.body = { data, total: totals[0].totals }
     logV.notice("select Books success", ctx.body)
 }
 
