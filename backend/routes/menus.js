@@ -2,7 +2,7 @@
 const query = require('../libs/mysqlPool')
 const router = require('koa-router')()
 const COLLECTION = 'library/menu'
-
+const logV = require('../Log').getLogger("Router:validate")
 const getMenusTree = async ctx => {
     const { roleId } = ctx.request.query;
     const sql = roleId == '2001' ? `select * from menus` : `select * from menus where role_id=${roleId}`

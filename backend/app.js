@@ -14,10 +14,11 @@ const menus = require('./routes/menus')
 const role = require('./routes/role')
 const register = require('./routes/register')
 const statistics = require('./routes/statistics')
+const logV = require('./Log').getLogger("Router:validate")
 const app = new Koa()
 const jwtSecret = 'jwtSecret'
 
-app.use(koaJwt({ secret: jwtSecret }).unless({ path: [/\/library\/login/,/\/library\/register/] }))
+app.use(koaJwt({ secret: jwtSecret }).unless({ path: [/\/library\/login/, /\/library\/register/] }))
 app.use(cors({ 'origin': "*" }));
 onerror(app)
 app.use(logger())
@@ -34,6 +35,7 @@ app.use(statistics.routes(), statistics.allowedMethods())
 
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
+  logV.error("app err", err)
 });
 
 module.exports = app
