@@ -1,5 +1,5 @@
 {
-  "name": "starr-blacklist",
+  "name": "backend",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -8,6 +8,8 @@
     "prd": "pm2 start bin/www",
     "test": "jest"
   },
+  "author": "zhoushangdeng",
+  "license": "ISC",
   "dependencies": {
     "@koa/cors": "^3.3.0",
     "debug": "^4.1.1",

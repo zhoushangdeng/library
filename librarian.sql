@@ -11,7 +11,7 @@
  Target Server Version : 80023
  File Encoding         : 65001
 
- Date: 09/04/2022 23:51:31
+ Date: 14/05/2022 15:41:28
 */
 
 SET NAMES utf8mb4;
@@ -36,7 +36,7 @@ CREATE TABLE `book` (
   `brief` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `lend_sum` int DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of book
@@ -45,6 +45,9 @@ BEGIN;
 INSERT INTO `book` VALUES (13, '活着', NULL, '余华', '文学', 29, '新华书局', '2022-04-07 00:00:00', 100, 99, '2022-04-09 00:00:00', '活着讲述了人如何去承受巨大的苦难', 2);
 INSERT INTO `book` VALUES (14, '人间失格', NULL, '太宰治', '文学', 30, '不知名出版社', '2022-04-09 00:00:00', 100, 99, '2022-04-03 00:00:00', '人间失格', 3);
 INSERT INTO `book` VALUES (15, '三体', NULL, '刘慈欣', '科幻', 39, '三体出版社', '2008-04-11 00:00:00', 100, 100, '2022-04-01 00:00:00', '文化大革命如火如荼地进行，天文学家叶文洁在其间历经劫难，被带到军方绝秘计划“红岸工程”。叶文洁以太阳为天线，向宇宙发出地球文明的第一声啼鸣......', 2);
+INSERT INTO `book` VALUES (16, '生死疲劳', NULL, '莫言', '奇幻', 39, '莫言', '2022-05-14 15:19:40', 100, 100, '2022-05-14 15:19:47', '轮回', 2);
+INSERT INTO `book` VALUES (17, '红与黑', NULL, '汤达', '剧情', 40, '汤达', '2022-05-14 15:21:13', 100, 100, '2022-05-14 15:21:19', '法国', 0);
+INSERT INTO `book` VALUES (18, '百年孤独', NULL, '加西亚·马尔克斯', '魔幻现实主义文学', 39, '加西亚·马尔克斯', '2022-05-14 15:23:25', 100, 100, '2022-05-14 15:23:38', '哥伦比亚', 0);
 COMMIT;
 
 -- ----------------------------
