@@ -80,7 +80,7 @@
           <el-button type="primary" icon="el-icon-plus" size="mini" @click="addMenus(0)" plain>新增</el-button>
         </el-form-item>
       </el-form>
-      <el-pagination :currentPage="currentPage" :page-size="pageSize" :page-sizes="[100, 200, 300, 400]" small background layout="sizes, prev, pager, next" :total="1000" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+      <el-pagination :currentPage="state.currentPage" :page-size="state.pageSize" :page-sizes="[10, 20, 30, 40, 50]" small background layout="sizes, prev, pager, next" :total="state.total" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
     </el-footer>
   </el-container>
 </template>
@@ -94,6 +94,8 @@ export default defineComponent({
     const state = reactive({
       tableData: [],
       total: 0,
+      currentPage: 1,
+      pageSize: 10,
       from: {
         bookName: '',
         writer: '',
@@ -108,18 +110,7 @@ export default defineComponent({
       },
       status: '修改',
     })
-    interface dataType {
-      title: string
-      menusID: string
-      parentID: number
-      menusName: string
-      conponent: string
-      path: string
-      icon: string
-      type: 1
-    }
     const addMenus = (parentID) => {
-      console.log('id', parentID)
       state.status = '新增'
       state.from = {
         bookName: '',
@@ -169,9 +160,9 @@ export default defineComponent({
     }
     const input = ref('')
     const getBooks = async () => {
-      const data = await getBook({ keyword: '', currentPage: 0, total: 10 })
-      state.tableData = data
-
+      const data = await getBook({ keyword: '', currentPage: state.currentPage, total: state.pageSize, })
+      state.tableData = data.data
+      state.total = data.total
     }
     const dialogVisible = ref(false)
     const updateBooks = async () => {
@@ -203,14 +194,13 @@ export default defineComponent({
       },
     ]
 
-    const handleSizeChange = (val) => {
-      console.log({ val })
-    }
-    const handleCurrentChange = (val) => {
-      console.log({ val })
-    }
+    const handleSizeChange = (val) => (state.pageSize = val)
+    const handleCurrentChange = (val) => (state.currentPage = val)
+
     getBooks()
-    onBeforeMount(() => {})
+    onBeforeMount(() => {
+      // getBooks()
+    })
     return {
       state,
       giveUp,
