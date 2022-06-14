@@ -4,7 +4,7 @@ const { isEmpty } = require('lodash');
 const logV = require('../Log').getLogger("Router:validate")
 const jwt = require('jwt-simple');
 const { TOKEEN_EXPRIES } = process.env;
-const query = require('../libs/mysqlPool')
+const query = require('../lib/mysqlPool')
 
 const login = async ctx => {
   const { username, password } = ctx.request.body;

@@ -1,5 +1,5 @@
 
-const query = require('../libs/mysqlPool')
+const query = require('../lib/mysqlPool')
 const router = require('koa-router')()
 const COLLECTION = 'library/menu'
 const logV = require('../Log').getLogger("Router:validate")

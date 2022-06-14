@@ -1,4 +1,4 @@
-const query = require('../libs/mysqlPool')
+const query = require('../lib/mysqlPool')
 const router = require('koa-router')()
 const jwt = require('jwt-simple');
 const { isEmpty } = require('lodash');

@@ -1,7 +1,7 @@
 const router = require('koa-router')()
 const moment = require('moment')
 const logV = require('../Log').getLogger("Router:validate")
-const query = require('../libs/mysqlPool')
+const query = require('../lib/mysqlPool')
 const COLLECTION = "library/borrow";
 
 const selectBorrow = async ctx => {

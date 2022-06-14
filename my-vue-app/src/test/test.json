@@ -1,0 +1,23 @@
+location / {
+    root   html/library/dist;
+    index  index.html index.htm;
+    }
+    location /library {
+                                                                                        #允许cros跨域访问
+
+            add_header 'Access-Control-Allow-Origin' '*';
+
+proxy_pass  http://127.0.0.1:6006;
+
+}                                                                                                                                                                     
+                                                                                                                                                                
+                                              }
+error_page 404 /404.html;
+location = /40x.html {
+}
+
+error_page 500 502 503 504 /50x.html;
+location = /50x.html {
+
+    ssh-keygen -t rsa -C "<你的邮箱地址>" 作者：一只方橙 https://www.bilibili.com/read/cv15173707/ 出处：bilibili
+}
