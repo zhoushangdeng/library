@@ -5,7 +5,9 @@ const query = require('../lib/mysqlPool')
 const COLLECTION = "library/statistics";
 
 const selectStatistics = async ctx => {
-    const result = await query(`select * from book where lend_sum>0 order by lend_sum desc limit 10`)
+    // let sql = `select * from book where lend_sum>0 order by lend_sum desc limit 10`
+    let sql = `select * from Sheet1`
+    const result = await query(sql)
     ctx.body = result
     logV.trace("select borrow success", ctx.body)
 }

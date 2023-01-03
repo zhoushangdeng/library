@@ -19,6 +19,7 @@ import { useRouter } from 'vue-router'
 import Header from '@/layout/header/index.vue'
 import Menu from '@/layout/Menu/index.vue'
 import Main from '@/layout/main/index.vue'
+
 export default defineComponent({
   components: {
     Header,

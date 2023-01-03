@@ -49,11 +49,21 @@ const getNavList = async ctx => {
     })
 }
 
+const getPrice = async ctx => {
+    const { keyword, currentPage, total, id } = ctx.request.query;
+    logV.trace("select user", { keyword, currentPage, total, id })
+    let sql = `select * from Sheet1`
+    const result = await query(sql)
+    ctx.body = result
+    logV.trace("select user success", ctx.body)
+}
+
 router.prefix(`/${COLLECTION}`);
+router.get('/getPrice', getPrice);
 router.get('/', gettUser);
-router.get('/getNavList', getNavList);
-router.put('/', createUser)
-router.patch('/', updateUser)
-router.delete('/', deleteUser)
+// router.get('/getNavList', getNavList);
+// router.put('/', createUser)
+// router.patch('/', updateUser)
+// router.delete('/', deleteUser)
 
 module.exports = router

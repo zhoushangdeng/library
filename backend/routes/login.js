@@ -21,10 +21,11 @@ const userLogin = async ctx => {
         const roleId = data[0].role_id
         const name = data[0].name
         ctx.body = { code: 200, data: { id: userID, token: token, roleId, name }, msg: 'success' }
+        logV.trace("login success", ctx.body)
     } else {
+        ctx.status = 401
         ctx.body = { code: 401, data: '用户名或密码无效!', msg: data }
     }
-    logV.trace("login success", ctx.body)
 }
 
 router.prefix(`/${COLLECTION}`);

@@ -1,6 +1,6 @@
 //连接池
-var mysql = require("mysql");
-var pool = mysql.createPool({ host: 'localhost', user: 'root', password: 'root', database: 'librarian', port: 3306 });
+const mysql = require("mysql");
+const pool = mysql.createPool({ host: 'localhost', user: 'root', password: 'root', database: 'librarian', port: 3306 });
 
 const query = function (sql) {
     return new Promise((resolve, reject) => {
@@ -11,10 +11,9 @@ const query = function (sql) {
                     err2 ? reject(err2) : resolve(results);
                 });
             })
-        } catch (error) {
-            reject(error);
-        }
+        } catch (error) { reject(error); }
     })
 }
+
 
 module.exports = query;
