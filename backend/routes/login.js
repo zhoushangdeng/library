@@ -24,7 +24,7 @@ const userLogin = async ctx => {
         logV.trace("login success", ctx.body)
     } else {
         ctx.status = 401
-        ctx.body = { code: 401, data: '用户名或密码无效!', msg: data }
+        ctx.body = '登陆失败，用户名或密码无效!'
     }
 }
 
