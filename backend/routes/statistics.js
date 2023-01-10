@@ -1,14 +1,11 @@
 const router = require('koa-router')()
-const moment = require('moment')
-const logV = require('../Log').getLogger("Router:validate")
+const logV = require('../Log').getLogger("Router:statistics")
 const query = require('../lib/mysqlPool')
 const COLLECTION = "library/statistics";
 
 const selectStatistics = async ctx => {
-    // let sql = `select * from book where lend_sum>0 order by lend_sum desc limit 10`
-    let sql = `select * from Sheet1`
-    const result = await query(sql)
-    ctx.body = result
+    const sql = `select * from book where lend_sum>0 order by lend_sum desc limit 10`
+    ctx.body = await query(sql)
     logV.trace("select borrow success", ctx.body)
 }
 router.prefix(`/${COLLECTION}`);

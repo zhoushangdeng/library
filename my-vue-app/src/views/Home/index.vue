@@ -19,7 +19,7 @@
 <script lang="ts">
 import { ref, defineComponent, reactive, onMounted } from 'vue'
 import * as echarts from 'echarts'
-import { getStatistics } from '@/api/statistics'
+import { getStatistics } from '@/api/statistics';
 
 export default defineComponent({
   setup: () => {

@@ -9,16 +9,13 @@
 .env 配置样例：
 ```
 NODE_ENV=production
-DEBUG = server,Router:blacklist,-follow-redirects
-DEBUG_SHOW_HIDDEN = true
-DEBUG_DEPTH = 7
-DEBUG_COMPACT = true
-DEBUG_BREAK_LENGTH = 80
-
 SERVER_PORT = 6006
 NM_PUBLIC_KEY = "jwtSecret"
 TOKEEN_EXPRIES = 684000
 
-LOG_HTTP_LEVEL = notice
-LOG_LOCAL_LEVEL = debug
+MYSQL_HOST = localhost
+MYSQL_USER = root
+MYSQL_PASS = root
+MYSQL_DATABASE = librarian
+MYSQL_PORT = 3306
 ```

@@ -1,6 +1,6 @@
 const router = require('koa-router')()
 const moment = require('moment')
-const logV = require('../Log').getLogger("Router:validate")
+const logV = require('../Log').getLogger("Router:users")
 const query = require('../lib/mysqlPool')
 const COLLECTION = "library/user";
 

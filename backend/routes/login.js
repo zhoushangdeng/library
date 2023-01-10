@@ -2,22 +2,21 @@ const query = require('../lib/mysqlPool')
 const router = require('koa-router')()
 const jwt = require('jwt-simple');
 const { isEmpty } = require('lodash');
-const logV = require('../Log').getLogger("Router:validate")
-const { TOKEEN_EXPRIES } = process.env;
+const logV = require('../Log').getLogger("Router:login")
+const { TOKEEN_EXPRIES,NM_PUBLIC_KEY } = process.env;
 const COLLECTION = 'library/login'
 /* 登录 */
 const userLogin = async ctx => {
-    let { username, password, studentCode } = ctx.request.body;
+    const { username, password, studentCode } = ctx.request.body;
     logV.trace("user login", { username, password, studentCode })
-    let sql = `select * from user where name='${username}' and password='${password}'`;
+    const sql = `select * from user where name='${username}' and password='${password}'`;
     const data = await query(sql).then(res => isEmpty(res)
         ? query(`select * from user where student_code='${studentCode}' and password='${password}'`)
         : res)
     if (!isEmpty(data)) {
-        const jwtSecret = 'jwtSecret'
         const payload = { exp: Date.now() + parseInt(TOKEEN_EXPRIES), UserID: data[0].id }
-        let token = 'Bearer ' + jwt.encode(payload, jwtSecret)
-        let userID = data[0].id;
+        const token = 'Bearer ' + jwt.encode(payload, NM_PUBLIC_KEY)
+        const userID = data[0].id;
         const roleId = data[0].role_id
         const name = data[0].name
         ctx.body = { code: 200, data: { id: userID, token: token, roleId, name }, msg: 'success' }

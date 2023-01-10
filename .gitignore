@@ -5,3 +5,5 @@ lunix.md
 secret
 .DS_Store
 logs
+coverage
+testReport

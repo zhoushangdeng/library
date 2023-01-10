@@ -1,6 +1,7 @@
 //连接池
 const mysql = require("mysql");
-const pool = mysql.createPool({ host: 'localhost', user: 'root', password: 'root', database: 'librarian', port: 3306 });
+const { MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DATABASE, MYSQL_PORT } = process.env
+const pool = mysql.createPool({ host: MYSQL_HOST, user: MYSQL_USER, password: MYSQL_PASS, database: MYSQL_DATABASE, port: MYSQL_PORT });
 
 const query = function (sql) {
     return new Promise((resolve, reject) => {

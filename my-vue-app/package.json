@@ -6,7 +6,7 @@
     "build": "vite build",
     "serve": "vite preview"
   },
-  "author": "zhoushangdeng",
+  "author": "1912504939@qq.com",
   "license": "ISC",
   "dependencies": {
     "@types/node": "^17.0.23",

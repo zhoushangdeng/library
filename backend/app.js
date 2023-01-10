@@ -13,17 +13,18 @@ const borrow = require('./routes/borrow')
 const menus = require('./routes/menus')
 const role = require('./routes/role')
 const register = require('./routes/register')
+const index = require('./routes/index')
 const statistics = require('./routes/statistics')
-const logV = require('./Log').getLogger("Router:validate")
+const log = require('./Log').getLogger("error");
 const app = new Koa()
 const jwtSecret = 'jwtSecret'
-
-app.use(koaJwt({ secret: jwtSecret }).unless({ path: [/\/library\/login/, /\/library\/register/] }))
+app.use(koaJwt({ secret: jwtSecret }).unless({ path: [/\/library\/login/, /\/library\/_sms_login/, /\/library\/register/] }))
 app.use(cors({ 'origin': "*" }));
 onerror(app)
 app.use(logger())
 app.use(bodyparser({ enableTypes: ['json', 'form', 'text'] }))
 app.use(json())
+app.use(index.routes(), index.allowedMethods())
 app.use(login.routes(), login.allowedMethods())
 app.use(user.routes(), user.allowedMethods())
 app.use(book.routes(), book.allowedMethods())
@@ -35,7 +36,7 @@ app.use(statistics.routes(), statistics.allowedMethods())
 
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
-  logV.error("app err", err)
+  log.error("app err", err)
 });
 
 module.exports = app
