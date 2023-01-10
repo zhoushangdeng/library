@@ -271,4 +271,7 @@ export default defineComponent({
 .el-loading-spinner .circular {
   display: none; //隐藏之前element-ui默认的loading动画
 }
+.el-form-item__error {
+  color: black;
+}
 </style>

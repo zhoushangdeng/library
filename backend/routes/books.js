@@ -7,7 +7,9 @@ const COLLECTION = "library/book";
 const selectBooks = async ctx => {
     const { keyword, currentPage, total } = ctx.request.query;
     log.trace("select Books", { keyword, currentPage, total })
-    const data = await query(`select * from book where book_name like '%${keyword}%' order by id limit ${currentPage},${total}`)
+    const from = currentPage == 1 ? 0 : currentPage * total - total
+    const size = from + total
+    const data = await query(`select * from book where book_name like '%${keyword}%' order by id limit ${from},${size}`)
     const totals = await query(`SELECT COUNT(*) as total FROM book`)
     ctx.body = { data, total: totals[0].total }
     log.trace("select Books success", ctx.body)

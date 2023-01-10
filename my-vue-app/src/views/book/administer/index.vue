@@ -2,6 +2,7 @@
   <el-container>
     <el-main>
       <el-table :data="state.tableData" style="width: 99.5%" border stripe size="mini" height="calc(100vh - 180px)">
+        <el-table-column type="index" width="50" align="center" label="序号"> </el-table-column>
         <el-table-column prop="book_name" label="作品名称"> </el-table-column>
         <el-table-column prop="writer" label="作者" width="100" align="center"></el-table-column>
         <el-table-column prop="sort_name" label="类型" align="center" width="100"></el-table-column>
@@ -160,7 +161,11 @@ export default defineComponent({
     }
     const input = ref('')
     const getBooks = async () => {
-      const data = await getBook({ keyword: '', currentPage: state.currentPage, total: state.pageSize, })
+      const data = await getBook({
+        keyword: '',
+        currentPage: state.currentPage,
+        total: state.pageSize,
+      })
       state.tableData = data.data
       state.total = data.total
     }
@@ -194,8 +199,26 @@ export default defineComponent({
       },
     ]
 
-    const handleSizeChange = (val) => (state.pageSize = val)
-    const handleCurrentChange = (val) => (state.currentPage = val)
+    const handleSizeChange = async (val) => {
+      state.pageSize = val
+      const data = await getBook({
+        keyword: '',
+        currentPage: state.currentPage,
+        total: state.pageSize,
+      })
+      state.tableData = data.data
+      state.total = data.total
+    }
+    const handleCurrentChange = async (val) => {
+      state.currentPage = val
+      const data = await getBook({
+        keyword: '',
+        currentPage: state.currentPage,
+        total: state.pageSize,
+      })
+      state.tableData = data.data
+      state.total = data.total
+    }
 
     getBooks()
     onBeforeMount(() => {

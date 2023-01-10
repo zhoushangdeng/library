@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '../util/auth'
-import store from '@/store/index'
+import store from '../store/index'
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -69,7 +69,7 @@ router.beforeEach(async (to, from, next) => {/* 路由守卫 */
     } else {
       const Menus: [] = await store.dispatch('asyncGetmenus');
       if (to.path !== '/Home' && to.path !== '/') {
-        Menus.map((item) => {
+        Menus.map((item: any) => {
           if (item.path === to.path) {
             store.dispatch('addKeepAlive', item)
           }
@@ -80,11 +80,7 @@ router.beforeEach(async (to, from, next) => {/* 路由守卫 */
     }
     return
   }
-  if (to.path == '/register' || to.path == '/login') {
-    next()
-  } else {
-    next('/login')
-  }
+  (to.path == '/register' || to.path == '/login') ? next() : next('/login')
   NProgress.done()
 })
 export default router;
