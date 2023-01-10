@@ -1,0 +1,10 @@
+package-lock.json
+node_modules
+npm-debug.log
+lunix.md
+secret
+.DS_Store
+logs
+coverage
+testReport
+.env
