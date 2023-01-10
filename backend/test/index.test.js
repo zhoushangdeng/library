@@ -4,7 +4,7 @@ const URL = `http://localhost:6006`
 const authorization = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NzMzMTgwODE5NTQsIlVzZXJJRCI6MX0.L39r1_b9Gfupai7iJiPqRo1yArostGokHhj_znOu59s`
 const config = () => ({ headers: { 'Authorization': authorization, 'Content-Type': 'application/json' } });
 
-test("获取验证码", async () => {
+test.only("获取验证码", async () => {
     const data = { email: `${faker.internet.email()}` }
     const result = await axios.post(`${URL}/library/_sms_login`, data, config())
     expect(result.data).toEqual(true)
