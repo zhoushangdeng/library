@@ -8,7 +8,7 @@
 
 .env 配置样例：
 ```
-NODE_ENV=production
+#NODE_ENV=production
 SERVER_PORT = 6006
 NM_PUBLIC_KEY = "jwtSecret"
 TOKEEN_EXPRIES = 684000
@@ -18,4 +18,9 @@ MYSQL_USER = root
 MYSQL_PASS = root
 MYSQL_DATABASE = librarian
 MYSQL_PORT = 3306
+
+SMTP_HOST = localhost
+SMTP_PORT = 465
+MAILBOX = test@qq.com
+MAILBOX_PASS = qwertyuioasf
 ```
