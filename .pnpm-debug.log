@@ -1,0 +1,22 @@
+{
+  "0 debug pnpm:scope": {
+    "selected": 1,
+    "workspacePrefix": "/Users/dengruo/code/own/workspace"
+  },
+  "1 error pnpm": {
+    "code": "ELIFECYCLE",
+    "errno": "ENOENT",
+    "syscall": "spawn",
+    "file": "sh",
+    "pkgid": "workbench@0.1.0",
+    "stage": "start:library/backend",
+    "script": "cd packages/library/backend && npm run dev",
+    "pkgname": "workbench",
+    "err": {
+      "name": "pnpm",
+      "message": "workbench@0.1.0 start:library/backend: `cd packages/library/backend && npm run dev`\nspawn ENOENT",
+      "code": "ELIFECYCLE",
+      "stack": "pnpm: workbench@0.1.0 start:library/backend: `cd packages/library/backend && npm run dev`\nspawn ENOENT\n    at ChildProcess.<anonymous> (/opt/homebrew/lib/node_modules/pnpm/dist/pnpm.cjs:91795:22)\n    at ChildProcess.emit (node:events:378:20)\n    at maybeClose (node:internal/child_process:1067:16)\n    at Process.ChildProcess._handle.onexit (node:internal/child_process:301:5)"
+    }
+  }
+}
