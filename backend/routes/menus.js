@@ -7,28 +7,44 @@ const getMenusTree = async ctx => {
     const { roleId } = ctx.request.query;
     const sql = roleId == '2001' ? `select * from menus` : `select * from menus where role_id=${roleId}`
     const data = await query(sql)
-    const menus = []
-    data.map(item => {
-        if (item.parentID === 0) {
-            menus.push({ ...item, children: [] });
-        }
-    })
-    const filters = (menusArr) => {
-        menusArr.map(item => {
-            data.map(item2 => {
-                if (item2.parentID === item.id) {
-                    item.children.push({ ...item2, children: [] });
-                }
-            })
-            if (item.children.length > 0) {
-                filters(item.children)
-            }
-        })
-    }
-    filters(menus)
-    ctx.body = menus
-
+    ctx.body = arrayToTree(data)
+    logV.trace("getMenus", ctx.body)
 }
+
+const arrayToTree = (items) => {
+    const result = [];   // 存放结果集
+    const itemMap = {};  // 
+
+    for (const item of items) {// 先转成map存储
+        itemMap[item.id] = { ...item, children: [] }
+    }
+    for (const item of items) {
+        const id = item.id;
+        const pid = item.parentID;
+        const treeItem = itemMap[id];
+        if (pid === 0) {
+            result.push(treeItem);
+        } else {
+            if (!itemMap[pid]) {
+                itemMap[pid] = {
+                    children: [],
+                }
+            }
+            itemMap[pid].children.push(treeItem)
+        }
+    }
+    return result;
+}
+
+// const getChildren = (data, result, pid) => {
+//     for (const item of data) {
+//         if (item.parentID === pid) {
+//             const newItem = { ...item, children: [] };
+//             result.push(newItem);
+//             getChildren(data, newItem.children, item.id);
+//         }
+//     }
+// }
 
 const getMenus = async ctx => {
     const { roleId } = ctx.request.query;

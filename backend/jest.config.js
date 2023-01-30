@@ -11,7 +11,7 @@ module.exports = {
   // 输出测试报告文件
   "reporters": [
     "default",
-    ["./node_modules/jest-html-reporter", {
+    ["jest-html-reporter", {
       //输出页面标题
       pageTitle: "library测试报告",
       //输出测试报告的路径。
