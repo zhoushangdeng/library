@@ -3,15 +3,16 @@ const router = require('koa-router')()
 const jwt = require('jwt-simple');
 const { isEmpty } = require('lodash');
 const logV = require('../Log').getLogger("Router:login")
+const md5 = require('md5');
 const { TOKEEN_EXPRIES,NM_PUBLIC_KEY } = process.env;
 const COLLECTION = 'library/login'
 /* 登录 */
 const userLogin = async ctx => {
     const { username, password, studentCode } = ctx.request.body;
     logV.trace("user login", { username, password, studentCode })
-    const sql = `select * from user where name='${username}' and password='${password}'`;
+    const sql = `select * from user where name='${username}' and password='${md5(password)}'`;
     const data = await query(sql).then(res => isEmpty(res)
-        ? query(`select * from user where student_code='${studentCode}' and password='${password}'`)
+        ? query(`select * from user where student_code='${studentCode}' and password='${md5(password)}'`)
         : res)
     if (!isEmpty(data)) {
         const payload = { exp: Date.now() + parseInt(TOKEEN_EXPRIES), UserID: data[0].id }
