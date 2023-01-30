@@ -18,7 +18,7 @@ const statistics = require('./routes/statistics')
 const log = require('./Log').getLogger("error");
 const app = new Koa()
 const jwtSecret = 'jwtSecret'
-app.use(koaJwt({ secret: jwtSecret }).unless({ path: [/\/library\/login/, /\/library\/_sms_login/, /\/library\/register/] }))
+// app.use(koaJwt({ secret: jwtSecret }).unless({ path: [/\/library\/login/, /\/library\/_sms_login/, /\/library\/register/] }))
 app.use(cors({ 'origin': "*" }));
 onerror(app)
 app.use(logger())
