@@ -7,7 +7,7 @@
         </el-breadcrumb>
       </div>
       <div class="item2">
-        <el-popover placement="bottom" trigger="click" :width="90">
+        <el-popover placement="bottom" trigger="hover" :width="90">
           <template #reference>
             <el-button type="text">{{ userName }}</el-button>
           </template>
