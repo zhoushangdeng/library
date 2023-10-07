@@ -9,7 +9,7 @@
 .env 配置样例：
 ```
 #NODE_ENV=production
-SERVER_PORT = 6006
+SERVER_PORT = 6001
 NM_PUBLIC_KEY = "jwtSecret"
 TOKEEN_EXPRIES = 684000
 
