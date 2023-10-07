@@ -8,3 +8,4 @@ logs
 coverage
 testReport
 .env
+.pnpm-debug.log
